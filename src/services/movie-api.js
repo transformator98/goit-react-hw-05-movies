@@ -33,8 +33,8 @@ export function fetcthActorsMovie(movieId) {
   );
 }
 //запрос обзоров для страницы кинофильма.
-export function fetcthReviewsMovie() {
+export function fetcthReviewsMovie(movieId) {
   return fetchWithErrorHandling(
-    `${BASE_URL}/movie/{movie_id}/reviews?api_key=${API_KEY}&language=en-US&page=1`,
+    `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`,
   );
 }

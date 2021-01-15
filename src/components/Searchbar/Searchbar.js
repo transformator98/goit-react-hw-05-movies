@@ -25,7 +25,7 @@ export default function Searchbar({ onSubmit }) {
   };
 
   return (
-    <header className={s.searchbar}>
+    <section className={s.searchbar}>
       <form onSubmit={handleSubmit} className={s.searchForm}>
         <button type="submit" className={s.button}>
           <span className={s.label}>Search</span>
@@ -40,7 +40,7 @@ export default function Searchbar({ onSubmit }) {
           placeholder="Search images and photos"
         />
       </form>
-    </header>
+    </section>
   );
 }
 

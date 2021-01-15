@@ -67,7 +67,7 @@ export default function HomeView() {
       </Route>
 
       <Route path="/movies/:movieId/reviews">
-        <Reviews />
+        {movie && <Reviews movieId={movieId} />}
       </Route>
       <hr />
     </>

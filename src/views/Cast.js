@@ -12,10 +12,6 @@ export default function Cast({ movieId }) {
     movieApi.fetcthActorsMovie(movieId).then(({ cast }) => setCasts(cast));
   }, [movieId]);
 
-  // profile_path: "/xu1l9WmNY1XYZyJ3M2gvGqCCDGS.jpg"
-  // name: "Gal Gadot"
-
-  console.log('movieId', movieId);
   return (
     <>
       {casts && (
