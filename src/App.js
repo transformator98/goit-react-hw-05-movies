@@ -6,11 +6,12 @@ import AppBar from './components/AppBar';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 import HomeView from './views/HomeView';
 import MoviesView from './views/MoviesView';
-import DetailsPageView from './views/DetailsPageView';
+import MovieDetailsPage from './views/MovieDetailsPage';
+import NotFoundView from './views/NotFoundView';
 
 // import fetchApi from './API';
 
@@ -24,12 +25,16 @@ export default function App() {
           <HomeView />
         </Route>
 
-        <Route path="/movies">
+        <Route path="/movies" exact>
           <MoviesView />
         </Route>
 
-        <Route path="/movies/details" exact>
-          <DetailsPageView />
+        <Route path="/movies/:movieId">
+          <MovieDetailsPage />
+        </Route>
+
+        <Route>
+          <NotFoundView />
         </Route>
       </Switch>
       <ToastContainer autoClose={3000} />
