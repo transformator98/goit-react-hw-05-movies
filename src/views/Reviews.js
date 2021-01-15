@@ -1,3 +1,3 @@
 export default function Reviews() {
-  return <p>Reviews</p>;
+  return <h3>Reviews</h3>;
 }

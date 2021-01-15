@@ -1,0 +1,26 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+.item {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 180px;
+  height: 200px;
+  align-items: center;
+}
+.images {
+  width: 150px;
+  height: 150px;
+}
+.title {
+  margin: 0;
+  width: 150px;
+  padding-bottom: 10px;
+  white-space: pre-wrap;
+}

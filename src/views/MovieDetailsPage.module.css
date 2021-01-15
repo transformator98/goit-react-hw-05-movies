@@ -1,0 +1,21 @@
+.movie {
+  width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.images {
+  width: 430px;
+}
+.text {
+  width: 430px;
+}
+.title {
+  font-weight: 400;
+}
+.span {
+  font-weight: 600;
+  color: rgb(0, 138, 192);
+}

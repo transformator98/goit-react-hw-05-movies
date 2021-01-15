@@ -1,8 +1,9 @@
-import PageHeadimg from '../components/PageHeading';
+// import PageHeadimg from '../components/PageHeading';
 import { Route, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as movieApi from '../services/movie-api';
+import s from './MovieDetailsPage.module.css';
 
 import Reviews from './Reviews';
 import Cast from './Cast';
@@ -24,24 +25,42 @@ export default function HomeView() {
   return (
     <>
       {movie && (
-        <>
-          <PageHeadimg text={movie.title} />
-          <img src={`${IMG_URL}${movie.poster_path}`} alt={movie.title} />
-          <h2>{movie.title}</h2>
-          <p>
-            Vote average: <span>{movie.vote_average}</span>{' '}
-          </p>
-          <p>
-            Overview: <span>{movie.overview}</span>{' '}
-          </p>
-          <p>
-            Genres: <span>{movie.genres.map(genres => genres.name)}</span>{' '}
-          </p>
-        </>
+        <section className={s.movie}>
+          {/* <PageHeadimg text={movie.title} /> */}
+          <img
+            className={s.images}
+            src={`${IMG_URL}${movie.poster_path}`}
+            alt={movie.title}
+          />
+          <div className={s.text}>
+            <h2>{movie.title}</h2>
+            <p className={s.title}>
+              <span className={s.span}>Vote average: </span>{' '}
+              {movie.vote_average}
+            </p>
+            <p className={s.title}>
+              <span className={s.span}>Overview: </span> {movie.overview}
+            </p>
+            <p className={s.title}>
+              <span className={s.span}>Genres: </span>
+
+              {movie.genres.map(genres => genres.name).join(', ')}
+            </p>
+          </div>
+        </section>
       )}
       <hr />
-
-      <Link to={`/movies/${movieId}/cast`}>Cast </Link>
+      <section>
+        <h3>Additional information</h3>
+        <ul>
+          <li>
+            <Link to={`/movies/${movieId}/cast`}>Cast </Link>
+          </li>
+          <li>
+            <Link to={`/movies/${movieId}/reviews`}>Reviews </Link>
+          </li>
+        </ul>
+      </section>
 
       <Route path="/movies/:movieId/cast">
         {movie && <Cast movieId={movieId} />}
@@ -50,6 +69,7 @@ export default function HomeView() {
       <Route path="/movies/:movieId/reviews">
         <Reviews />
       </Route>
+      <hr />
     </>
   );
 }
