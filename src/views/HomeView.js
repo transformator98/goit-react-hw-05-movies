@@ -27,18 +27,3 @@ export default function HomeView() {
     </>
   );
 }
-// return (
-//   <>
-//     <PageHeadimg text="Популярные сегодня" />
-
-//     {trendings && (
-//       <ul>
-//         {trendings.map(trending => (
-//           <li key={trendings.id}>
-//             <Link to={`${url}/${trending.id}`}>{trending.title}</Link>
-//           </li>
-//         ))}
-//       </ul>
-//     )}
-//   </>
-// );

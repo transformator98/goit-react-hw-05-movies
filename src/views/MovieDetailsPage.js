@@ -1,5 +1,6 @@
 // import PageHeadimg from '../components/PageHeading';
-import { Route, useParams } from 'react-router-dom';
+
+import { Switch, Route, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as movieApi from '../services/movie-api';
@@ -25,27 +26,32 @@ export default function HomeView() {
   return (
     <>
       {movie && (
-        <section className={s.movie}>
+        <section>
           {/* <PageHeadimg text={movie.title} /> */}
-          <img
-            className={s.images}
-            src={`${IMG_URL}${movie.poster_path}`}
-            alt={movie.title}
-          />
-          <div className={s.text}>
-            <h2>{movie.title}</h2>
-            <p className={s.title}>
-              <span className={s.span}>Vote average: </span>{' '}
-              {movie.vote_average}
-            </p>
-            <p className={s.title}>
-              <span className={s.span}>Overview: </span> {movie.overview}
-            </p>
-            <p className={s.title}>
-              <span className={s.span}>Genres: </span>
+          <button className={s.button}>
+            <Link to="/"></Link>
+          </button>
+          <div className={s.movie}>
+            <img
+              className={s.images}
+              src={`${IMG_URL}${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <div className={s.text}>
+              <h2>{movie.title}</h2>
+              <p className={s.title}>
+                <span className={s.span}>Vote average: </span>{' '}
+                {movie.vote_average}
+              </p>
+              <p className={s.title}>
+                <span className={s.span}>Overview: </span> {movie.overview}
+              </p>
+              <p className={s.title}>
+                <span className={s.span}>Genres: </span>
 
-              {movie.genres.map(genres => genres.name).join(', ')}
-            </p>
+                {movie.genres.map(genres => genres.name).join(', ')}
+              </p>
+            </div>
           </div>
         </section>
       )}
@@ -62,13 +68,14 @@ export default function HomeView() {
         </ul>
       </section>
 
-      <Route path="/movies/:movieId/cast">
-        {movie && <Cast movieId={movieId} />}
-      </Route>
-
-      <Route path="/movies/:movieId/reviews">
-        {movie && <Reviews movieId={movieId} />}
-      </Route>
+      <Switch>
+        <Route path="/movies/:movieId/cast">
+          {movie && <Cast movieId={movieId} />}
+        </Route>
+        <Route path="/movies/:movieId/reviews">
+          {movie && <Reviews movieId={movieId} />}
+        </Route>
+      </Switch>
       <hr />
     </>
   );

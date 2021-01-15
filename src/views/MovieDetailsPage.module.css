@@ -19,3 +19,21 @@
   font-weight: 600;
   color: rgb(0, 138, 192);
 }
+
+.button {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background-image: url('https://www.flaticon.com/svg/vstatic/svg/271/271220.svg?token=exp=1610747642~hmac=2f77190626e984a793fd93872c2e9f9d');
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  outline: none;
+}
+.button:hover {
+  opacity: 1;
+}
