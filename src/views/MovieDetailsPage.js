@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as movieApi from '../services/movie-api';
 import s from './MovieDetailsPage.module.css';
+import HomeView from './HomeView';
 
 import Reviews from './Reviews';
 import Cast from './Cast';
 
-export default function HomeView() {
+export default function MovieDetailsPage() {
   const IMG_URL = 'https://image.tmdb.org/t/p/w500';
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
