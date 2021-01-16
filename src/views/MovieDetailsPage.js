@@ -1,19 +1,29 @@
 // import PageHeadimg from '../components/PageHeading';
 
-import { Switch, Route, useParams } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  useParams,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as movieApi from '../services/movie-api';
 import s from './MovieDetailsPage.module.css';
-import HomeView from './HomeView';
 
 import Reviews from './Reviews';
 import Cast from './Cast';
 
 export default function MovieDetailsPage() {
   const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+  const hictory = useHistory();
+  // const location = useLocation();
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
+
+  // console.log('hictory', hictory);
+  // console.log('location', location);
 
   useEffect(() => {
     movieApi
@@ -24,14 +34,16 @@ export default function MovieDetailsPage() {
 
   // const genres = movie.genres.map(genres => genres.name);
 
+  const goBack = () => {
+    hictory.goBack();
+  };
+
   return (
     <>
       {movie && (
         <section>
           {/* <PageHeadimg text={movie.title} /> */}
-          <button className={s.button}>
-            <Link to="/"></Link>
-          </button>
+          <button className={s.button} onClick={goBack}></button>
           <div className={s.movie}>
             <img
               className={s.images}
