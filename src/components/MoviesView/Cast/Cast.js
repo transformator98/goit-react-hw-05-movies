@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react';
-import * as movieApi from '../services/movie-api';
+import * as movieApi from '../../../services/movie-api';
 import notImages from './notImages.png';
 import s from './Cast.module.css';
-import Loader from '../components/Loader';
-import ImagesErrorView from './ImagesErrorView';
-
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+import Loader from '../../Loader';
+import ImagesErrorView from '../../../views/ImagesErrorView';
+import Status from '../../../services/Status';
 
 export default function Cast({ movieId }) {
   const [casts, setCasts] = useState(null);
@@ -42,8 +36,8 @@ export default function Cast({ movieId }) {
       )}
       {casts && status === Status.RESOLVED && (
         <ul className={s.list}>
-          {casts.map(cast => (
-            <li className={s.item} key={cast.id}>
+          {casts.map((cast, i) => (
+            <li className={s.item} key={i}>
               {cast.profile_path ? (
                 <img
                   src={`${IMG_URL}${cast.profile_path}`}

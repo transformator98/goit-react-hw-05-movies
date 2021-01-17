@@ -1,12 +1,10 @@
 import PageHeadimg from '../components/PageHeading';
-import { Link } from 'react-router-dom';
-// import { Link, useRouteMatch } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as movieApi from '../services/movie-api';
+import ViewItem from './ViewItem';
 
 export default function HomeView() {
   const [trendings, setTrending] = useState(null);
-  // const { url } = useRouteMatch();
 
   useEffect(() => {
     movieApi.fetchTrending().then(({ results }) => setTrending(results));
@@ -18,9 +16,11 @@ export default function HomeView() {
       {trendings && (
         <ul>
           {trendings.map(trending => (
-            <li key={trending.id}>
-              <Link to={`movies/${trending.id}`}>{trending.title}</Link>
-            </li>
+            <ViewItem
+              key={trending.id}
+              id={trending.id}
+              title={trending.title}
+            />
           ))}
         </ul>
       )}

@@ -6,21 +6,15 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import * as movieApi from '../services/movie-api';
+import { NavLink } from 'react-router-dom';
+import * as movieApi from '../../../services/movie-api';
 import s from './MovieDetailsPage.module.css';
-import Loader from '../components/Loader';
-import ImagesErrorView from './ImagesErrorView';
+import Loader from '../../Loader';
+import ImagesErrorView from '../../../views/ImagesErrorView';
+import Status from '../../../services/Status';
 
-import Reviews from './Reviews';
-import Cast from './Cast';
-
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+import Reviews from '../Review';
+import Cast from '../Cast';
 
 export default function MovieDetailsPage() {
   const IMG_URL = 'https://image.tmdb.org/t/p/w500';
@@ -28,9 +22,9 @@ export default function MovieDetailsPage() {
   const location = useLocation();
   const [error, setError] = useState(null);
   const [status, setStatus] = useState(Status.IDLE);
-
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
+  const { state } = useLocation();
 
   console.log('hictory', history);
   console.log('location', location);
@@ -52,9 +46,14 @@ export default function MovieDetailsPage() {
   }, [movieId]);
 
   const goBack = () => {
-    history.goBack();
-    // history.push('/');
+    // history.goBack();
+    if (!state) {
+      history.push('./');
+    }
+
+    history.push(state.from);
   };
+  console.log(state);
 
   return (
     <>
@@ -66,6 +65,7 @@ export default function MovieDetailsPage() {
         <>
           <section>
             <button className={s.button} onClick={goBack}></button>
+            {/* onClick={goBack} */}
             <div className={s.movie}>
               <img
                 className={s.images}
@@ -97,10 +97,24 @@ export default function MovieDetailsPage() {
             <h3>Additional information</h3>
             <ul>
               <li>
-                <Link to={`/movies/${movieId}/cast`}>Cast</Link>
+                <NavLink
+                  activeStyle={{ color: 'green' }}
+                  to={{
+                    pathname: `/movies/${movieId}/cast`,
+                  }}
+                >
+                  Cast
+                </NavLink>
               </li>
               <li>
-                <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
+                <NavLink
+                  activeStyle={{ color: 'green' }}
+                  to={{
+                    pathname: `/movies/${movieId}/reviews`,
+                  }}
+                >
+                  Reviews
+                </NavLink>
               </li>
             </ul>
           </section>

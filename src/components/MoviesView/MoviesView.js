@@ -1,16 +1,12 @@
-import Searchbar from '../components/Searchbar';
+import Searchbar from '../Searchbar';
 import { useState, useEffect } from 'react';
-import * as movieApi from '../services/movie-api';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import Loader from '../components/Loader';
-import ImagesErrorView from './ImagesErrorView';
-
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+import * as movieApi from '../../services/movie-api';
+import { useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+import Loader from '../Loader';
+import ImagesErrorView from '../../views/ImagesErrorView';
+import ViewItem from '../../views/ViewItem';
+import { toast } from 'react-toastify';
+import Status from '../../services/Status';
 
 export default function MoviesView() {
   const [status, setStatus] = useState(Status.IDLE);
@@ -18,6 +14,7 @@ export default function MoviesView() {
   const [movies, setMovies] = useState(null);
   const location = useLocation();
   const history = useHistory();
+  const { url } = useRouteMatch();
   const querryName = new URLSearchParams(location.search).get('querry');
 
   const handleFormSubmit = querry => {
@@ -36,6 +33,9 @@ export default function MoviesView() {
     movieApi
       .fetchSearchMovie(querryName)
       .then(({ results }) => {
+        if (results.length === 0) {
+          toast.error('По вашему запросу нет нужного результата!');
+        }
         setMovies(results);
         setStatus(Status.RESOLVED);
       })
@@ -56,9 +56,12 @@ export default function MoviesView() {
       {movies && status === Status.RESOLVED && (
         <ul>
           {movies.map(movie => (
-            <li key={movie.id}>
-              <Link to={`movies/${movie.id}`}>{movie.title}</Link>
-            </li>
+            <ViewItem
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              from={`${url}${location.search}`}
+            />
           ))}
         </ul>
       )}

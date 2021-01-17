@@ -1,4 +1,3 @@
-// import { Component } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';

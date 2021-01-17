@@ -6,14 +6,11 @@ import AppBar from './components/AppBar';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import { toast } from 'react-toastify';
 
 import HomeView from './views/HomeView';
-import MoviesView from './views/MoviesView';
-import MovieDetailsPage from './views/MovieDetailsPage';
+import MoviesView from './components/MoviesView';
+import MovieDetailsPage from './components/MoviesView/MovieDetailsPage';
 import NotFoundView from './views/NotFoundView';
-
-// import fetchApi from './API';
 
 export default function App() {
   return (

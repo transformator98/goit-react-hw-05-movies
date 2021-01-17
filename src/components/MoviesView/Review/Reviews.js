@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
-import * as movieApi from '../services/movie-api';
-import Loader from '../components/Loader';
-import ImagesErrorView from './ImagesErrorView';
-
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+import * as movieApi from '../../../services/movie-api';
+import Loader from '../../Loader';
+import ImagesErrorView from '../../../views/ImagesErrorView';
+import Status from '../../../services/Status';
 
 export default function Reviews({ movieId }) {
   const [reviews, setReviews] = useState(null);
