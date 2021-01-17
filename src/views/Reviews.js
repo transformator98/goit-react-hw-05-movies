@@ -1,20 +1,44 @@
 import { useState, useEffect } from 'react';
 import * as movieApi from '../services/movie-api';
+import Loader from '../components/Loader';
+import ImagesErrorView from './ImagesErrorView';
 
-// import s from './Cast.module.css';
+const Status = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
 
 export default function Reviews({ movieId }) {
   const [reviews, setReviews] = useState(null);
+  const [status, setStatus] = useState(Status.IDLE);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    movieApi
-      .fetcthReviewsMovie(movieId)
-      .then(({ results }) => setReviews(results));
+    setStatus(Status.PENDING);
+    setTimeout(() => {
+      movieApi
+        .fetcthReviewsMovie(movieId)
+        .then(({ results }) => {
+          setReviews(results);
+          setStatus(Status.RESOLVED);
+        })
+        .catch(error => {
+          setError(error);
+          setStatus(Status.REJECTED);
+        });
+    }, 500);
   }, [movieId]);
 
   return (
     <>
+      {status === Status.PENDING && <Loader />}
+      {status === Status.REJECTED && (
+        <ImagesErrorView message={error.message} />
+      )}
       {reviews &&
+        status === Status.RESOLVED &&
         (reviews.length > 0 ? (
           <ul>
             {reviews.map(review => (

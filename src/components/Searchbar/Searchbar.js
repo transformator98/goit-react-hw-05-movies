@@ -6,22 +6,22 @@ import PropTypes from 'prop-types';
 import s from './Searchbar.module.css';
 
 export default function Searchbar({ onSubmit }) {
-  const [imageName, setImageName] = useState('');
+  const [querry, setQuerry] = useState('');
 
   const handleNameChange = event => {
-    setImageName(event.target.value.toLowerCase());
+    setQuerry(event.target.value.toLowerCase());
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (imageName.trim() === '') {
+    if (querry.trim() === '') {
       toast.error('Введите текст для поиска');
       return;
     }
 
-    onSubmit(imageName);
-    setImageName('');
+    onSubmit(querry);
+    setQuerry('');
   };
 
   return (
@@ -31,7 +31,7 @@ export default function Searchbar({ onSubmit }) {
           <span className={s.label}>Search</span>
         </button>
         <input
-          value={imageName}
+          value={querry}
           onChange={handleNameChange}
           className={s.input}
           type="text"
