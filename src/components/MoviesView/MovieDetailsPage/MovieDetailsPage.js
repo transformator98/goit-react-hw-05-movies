@@ -4,17 +4,22 @@ import {
   useParams,
   useHistory,
   useLocation,
+  useRouteMatch,
+  NavLink,
 } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+
+import { useState, useEffect, lazy, Suspense } from 'react';
+
 import * as movieApi from '../../../services/movie-api';
 import s from './MovieDetailsPage.module.css';
 import Loader from '../../Loader';
 import ImagesErrorView from '../../../views/ImagesErrorView';
 import Status from '../../../services/Status';
 
-import Reviews from '../Review';
-import Cast from '../Cast';
+const Cast = lazy(() => import('../Cast' /* webpackChunkName: "Cast" */));
+const Reviews = lazy(() =>
+  import('../Review' /* webpackChunkName: "Review" */),
+);
 
 export default function MovieDetailsPage() {
   const IMG_URL = 'https://image.tmdb.org/t/p/w500';
@@ -25,9 +30,11 @@ export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const { state } = useLocation();
+  const { url, path } = useRouteMatch();
+  console.log('url', url);
 
   console.log('hictory', history);
-  console.log('location', location);
+  console.log('state', state);
 
   useEffect(() => {
     setStatus(Status.PENDING);
@@ -46,14 +53,12 @@ export default function MovieDetailsPage() {
   }, [movieId]);
 
   const goBack = () => {
-    // history.goBack();
-    if (!state) {
-      history.push('./');
+    if (state && state.from) {
+      return history.push(state.from);
     }
 
-    history.push(state.from);
+    history.push('/');
   };
-  console.log(state);
 
   return (
     <>
@@ -64,8 +69,12 @@ export default function MovieDetailsPage() {
       {movie && status === Status.RESOLVED && (
         <>
           <section>
-            <button className={s.button} onClick={goBack}></button>
-            {/* onClick={goBack} */}
+            <button
+              type="button"
+              className={s.button}
+              onClick={goBack}
+            ></button>
+
             <div className={s.movie}>
               <img
                 className={s.images}
@@ -100,7 +109,8 @@ export default function MovieDetailsPage() {
                 <NavLink
                   activeStyle={{ color: 'green' }}
                   to={{
-                    pathname: `/movies/${movieId}/cast`,
+                    pathname: `${url}/cast`,
+                    state: { from: location },
                   }}
                 >
                   Cast
@@ -110,7 +120,8 @@ export default function MovieDetailsPage() {
                 <NavLink
                   activeStyle={{ color: 'green' }}
                   to={{
-                    pathname: `/movies/${movieId}/reviews`,
+                    pathname: `${url}/reviews`,
+                    state: { from: location },
                   }}
                 >
                   Reviews
@@ -118,15 +129,16 @@ export default function MovieDetailsPage() {
               </li>
             </ul>
           </section>
-
-          <Switch>
-            <Route path="/movies/:movieId/cast">
-              {movie && <Cast movieId={movieId} />}
-            </Route>
-            <Route path="/movies/:movieId/reviews">
-              {movie && <Reviews movieId={movieId} />}
-            </Route>
-          </Switch>
+          <Suspense fallback={<Loader />}>
+            <Switch>
+              <Route path={`${path}/cast`}>
+                {movie && <Cast movieId={movieId} />}
+              </Route>
+              <Route path={`${path}/reviews`}>
+                {movie && <Reviews movieId={movieId} />}
+              </Route>
+            </Switch>
+          </Suspense>
           <hr />
         </>
       )}

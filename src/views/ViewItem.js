@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function ViewItem({ id, title }) {
   const location = useLocation();
+
   return (
     <li key={id}>
       <Link
         to={{
-          pathname: `/movies/${id}/`,
+          pathname: `/movies/${id}`,
           state: { from: location },
         }}
       >
@@ -16,3 +17,7 @@ export default function ViewItem({ id, title }) {
     </li>
   );
 }
+ViewItem.propTypes = {
+  id: PropTypes.number,
+  title: PropTypes.string,
+};

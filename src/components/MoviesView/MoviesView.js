@@ -60,7 +60,7 @@ export default function MoviesView() {
               key={movie.id}
               id={movie.id}
               title={movie.title}
-              from={`${url}${location.search}`}
+              from={`${url}/${location.search}`}
             />
           ))}
         </ul>
