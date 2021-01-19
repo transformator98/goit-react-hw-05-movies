@@ -2,10 +2,11 @@ import PageHeadimg from '../components/PageHeading';
 import { useState, useEffect } from 'react';
 import * as movieApi from '../services/movie-api';
 import ViewItem from './ViewItem';
+import s from './HomeView.scss';
 
 export default function HomeView() {
   const [trendings, setTrending] = useState(null);
-
+  console.log(trendings);
   useEffect(() => {
     movieApi.fetchTrending().then(({ results }) => setTrending(results));
   }, []);
@@ -14,10 +15,11 @@ export default function HomeView() {
       <PageHeadimg text="Популярные сегодня" />
 
       {trendings && (
-        <ul>
+        <ul className="movies">
           {trendings.map(trending => (
             <ViewItem
               key={trending.id}
+              images={trending.poster_path}
               id={trending.id}
               title={trending.title}
             />
