@@ -2,11 +2,11 @@ import PageHeadimg from '../components/PageHeading';
 import { useState, useEffect } from 'react';
 import * as movieApi from '../services/movie-api';
 import ViewItem from './ViewItem';
-import s from './HomeView.scss';
+import './HomeView.scss';
 
 export default function HomeView() {
   const [trendings, setTrending] = useState(null);
-  console.log(trendings);
+
   useEffect(() => {
     movieApi.fetchTrending().then(({ results }) => setTrending(results));
   }, []);

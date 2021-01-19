@@ -7,6 +7,7 @@ import ImagesErrorView from '../../views/ImagesErrorView';
 import ViewItem from '../../views/ViewItem';
 import { toast } from 'react-toastify';
 import Status from '../../services/Status';
+import '../../views/HomeView.scss';
 
 export default function MoviesView() {
   const [status, setStatus] = useState(Status.IDLE);
@@ -44,7 +45,7 @@ export default function MoviesView() {
         setStatus(Status.REJECTED);
       });
   }, [querryName]);
-
+  console.log(movies);
   return (
     <>
       <Searchbar onSubmit={handleFormSubmit} />
@@ -54,10 +55,11 @@ export default function MoviesView() {
         <ImagesErrorView message={error.message} />
       )}
       {movies && status === Status.RESOLVED && (
-        <ul>
+        <ul className="movies">
           {movies.map(movie => (
             <ViewItem
               key={movie.id}
+              images={movie.poster_path}
               id={movie.id}
               title={movie.title}
               from={`${url}/${location.search}`}
