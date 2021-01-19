@@ -7,8 +7,8 @@ import {
   useRouteMatch,
   NavLink,
 } from 'react-router-dom';
-
-import { useState, useEffect, lazy, Suspense } from 'react';
+import routes from '../../../routes';
+import { useState, useEffect, lazy, Suspense, useRef } from 'react';
 
 import * as movieApi from '../../../services/movie-api';
 import s from './MovieDetailsPage.module.css';
@@ -29,12 +29,8 @@ export default function MovieDetailsPage() {
   const [status, setStatus] = useState(Status.IDLE);
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
-  const { state } = useLocation();
   const { url, path } = useRouteMatch();
-  console.log('url', url);
-
-  console.log('hictory', history);
-  console.log('state', state);
+  const prevPage = useRef();
 
   useEffect(() => {
     setStatus(Status.PENDING);
@@ -52,12 +48,17 @@ export default function MovieDetailsPage() {
     }, 500);
   }, [movieId]);
 
-  const goBack = () => {
-    if (state && state.from) {
-      return history.push(state.from);
+  useEffect(() => {
+    if (location.state && location.state.from) {
+      prevPage.current = { ...location.state.from };
     }
+  }, []);
 
-    history.push('/');
+  const goBack = () => {
+    if (prevPage && prevPage.current) {
+      return history.push(prevPage.current);
+    }
+    history.push(routes.home);
   };
 
   return (
@@ -108,10 +109,10 @@ export default function MovieDetailsPage() {
               <li>
                 <NavLink
                   activeStyle={{ color: 'green' }}
-                  to={{
-                    pathname: `${url}/cast`,
-                    state: { from: location },
-                  }}
+                  to={`${url}/cast`}
+                  onClick={() =>
+                    history.push(history.location?.state?.from || routes.home)
+                  }
                 >
                   Cast
                 </NavLink>
@@ -123,6 +124,9 @@ export default function MovieDetailsPage() {
                     pathname: `${url}/reviews`,
                     state: { from: location },
                   }}
+                  onClick={() =>
+                    history.push(history.location?.state?.from || routes.home)
+                  }
                 >
                   Reviews
                 </NavLink>
