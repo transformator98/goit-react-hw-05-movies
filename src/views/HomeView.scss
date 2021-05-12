@@ -23,9 +23,10 @@
   }
 }
 .movies {
-  padding: 14px 0 28px;
+  padding: 14px 0;
   display: grid;
   grid-gap: 20px;
+  margin-bottom: 0;
 
   @include for-size(tablet) {
     grid-template-columns: repeat(2, 1fr);

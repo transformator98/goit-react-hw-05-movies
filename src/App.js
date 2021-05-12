@@ -8,6 +8,7 @@ import AppBar from './components/AppBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from './components/Loader';
+import Footer from './components/Footer';
 
 // import HomeView from './views/HomeView';
 // import MoviesView from './components/MoviesView';
@@ -31,28 +32,32 @@ const NotFoundView = lazy(() =>
 
 export default function App() {
   return (
-    <Container>
-      <AppBar />
-      <Suspense fallback={<Loader />}>
-        <Switch>
-          <Route path="/" exact>
-            <HomeView />
-          </Route>
+    <>
+      <Container>
+        <AppBar />
+        <Suspense fallback={<Loader />}>
+          <Switch>
+            <Route path="/" exact>
+              <HomeView />
+            </Route>
 
-          <Route path="/movies" exact>
-            <MoviesView />
-          </Route>
+            <Route path="/movies" exact>
+              <MoviesView />
+            </Route>
 
-          <Route path="/movies/:slug">
-            <MovieDetailsPage />
-          </Route>
+            <Route path="/movies/:slug">
+              <MovieDetailsPage />
+            </Route>
 
-          <Route>
-            <NotFoundView />
-          </Route>
-        </Switch>
-      </Suspense>
-      <ToastContainer autoClose={3000} />
-    </Container>
+            <Route>
+              <NotFoundView />
+            </Route>
+          </Switch>
+        </Suspense>
+
+        <ToastContainer autoClose={3000} />
+      </Container>
+      <Footer />
+    </>
   );
 }
