@@ -9,15 +9,15 @@ async function fetchWithErrorHandling(url = '', config = {}) {
     : Promise.reject(new Error('Not found'));
 }
 //список самых популярных фильмов на сегодня для создания коллекции на главной странице.
-export function fetchTrending() {
+export function fetchTrending(page) {
   return fetchWithErrorHandling(
-    `${BASE_URL}/trending/movie/day?api_key=${API_KEY}`,
+    `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&page=${page}`,
   );
 }
 // поиск кинофильма по ключевому слову на странице фильмов.
-export function fetchSearchMovie(query) {
+export function fetchSearchMovie(query, page) {
   return fetchWithErrorHandling(
-    `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`,
+    `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&page=${page}&query=${query}&include_adult=false`,
   );
   //
 }
@@ -25,6 +25,12 @@ export function fetchSearchMovie(query) {
 export function fetchDetailsMovie(movieId) {
   return fetchWithErrorHandling(
     `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
+  );
+}
+//запрос полной информации о фильме для страницы кинофильма.
+export function fetchDetailsMovieVideo(movieId) {
+  return fetchWithErrorHandling(
+    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`,
   );
 }
 //запрос информации о актёрском составе для страницы кинофильма.

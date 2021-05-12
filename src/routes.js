@@ -1,7 +1,9 @@
-export default {
+const routes = {
   home: '/',
   moviesPage: '/movies',
-  detailsPage: '/movies/:movieId',
+  detailsPage: '/movies/:slug',
   castPage: '/movies/:movieId/cast',
   reviews: '/movies/:movieId/reviews',
 };
+
+export default routes;

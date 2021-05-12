@@ -11,10 +11,12 @@ import routes from '../../../routes';
 import { useState, useEffect, lazy, Suspense, useRef } from 'react';
 
 import * as movieApi from '../../../services/movie-api';
-import s from './MovieDetailsPage.module.css';
+import s from './MovieDetailsPage.module.scss';
 import Loader from '../../Loader';
 import ImagesErrorView from '../../../views/ImagesErrorView';
 import Status from '../../../services/Status';
+import noImages from '../../../images/no-images.jpg';
+import YouTube from 'react-youtube';
 
 const Cast = lazy(() => import('../Cast' /* webpackChunkName: "Cast" */));
 const Reviews = lazy(() =>
@@ -27,11 +29,13 @@ export default function MovieDetailsPage() {
   const location = useLocation();
   const [error, setError] = useState(null);
   const [status, setStatus] = useState(Status.IDLE);
-  const { movieId } = useParams();
+
   const [movie, setMovie] = useState(null);
+  const [movieVideo, setMovieVideo] = useState(null);
   const { url, path } = useRouteMatch();
   const prevPage = useRef();
-
+  const { slug } = useParams();
+  const movieId = slug.match(/[a-z0-9]+$/)[0];
   useEffect(() => {
     setStatus(Status.PENDING);
     setTimeout(() => {
@@ -45,6 +49,17 @@ export default function MovieDetailsPage() {
           setError(error);
           setStatus(Status.REJECTED);
         });
+      movieApi
+        .fetchDetailsMovieVideo(movieId)
+        .then(({ results }) => {
+          const video = results.map(el => el.key);
+          setMovieVideo(video[0]);
+          setStatus(Status.RESOLVED);
+        })
+        .catch(error => {
+          setError(error);
+          setStatus(Status.REJECTED);
+        });
     }, 500);
   }, [movieId]);
 
@@ -52,13 +67,22 @@ export default function MovieDetailsPage() {
     if (location.state && location.state.from) {
       prevPage.current = { ...location.state.from };
     }
-  }, []);
+  }, [location.state]);
 
   const goBack = () => {
     if (prevPage && prevPage.current) {
       return history.push(prevPage.current);
     }
     history.push(routes.home);
+  };
+
+  const opts = {
+    height: '300',
+    width: '430',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 1,
+    },
   };
 
   return (
@@ -79,7 +103,11 @@ export default function MovieDetailsPage() {
             <div className={s.movie}>
               <img
                 className={s.images}
-                src={`${IMG_URL}${movie.poster_path}`}
+                src={
+                  movie.poster_path
+                    ? `${IMG_URL}${movie.poster_path}`
+                    : noImages
+                }
                 alt={movie.title}
               />
               <div className={s.text}>
@@ -99,6 +127,9 @@ export default function MovieDetailsPage() {
 
                   {movie.genres.map(genres => genres.name).join(', ')}
                 </p>
+                {movieVideo ? (
+                  <YouTube videoId={movieVideo} opts={opts} />
+                ) : null}
               </div>
             </div>
           </section>
